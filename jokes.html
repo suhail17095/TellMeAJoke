@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            color: white;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: auto;
+            background-color: rgb(69, 188, 108);
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 35rem;
+            background-color: rgb(114, 217, 123);
+            justify-content: center;
+            align-items: center;
+            margin-top: 15rem;
+            border-radius: 10px;
+        }
+
+        button {
+            width: 25%;
+            border-radius: 5px;
+            border: none;
+            margin-bottom: 5px;
+            height: 20px;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            color: black;
+            background-color: rgb(69, 188, 108);
+            color: white;
+        }
+        button:hover{
+            transform: scale(1.2);
+        }
+
+        .jokes {
+            height: 150px;
+            width: 250px;
+            background-color: white;
+            margin-bottom: 20px;
+            margin-top: 30px;
+            padding-top: 2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            border-radius: 10px;
+            overflow: hidden;
+            color: black;
+        }
+        .selectors{
+            background-color: blue;
+            height: 30px;
+            background-color: rgb(69, 188, 108);
+            padding: 20px;
+            margin-bottom: 1rem;
+            border-radius: 10px;
+            padding-top: 2rem;
+        }
+        input{
+            margin-right: 10px;
+        }
+        head{
+            position: absolute;
+        }
+        p{
+            position: absolute;
+            top: 30px;
+            font-size: 3rem;
+            font: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+        <p>
+            Just A Joke!
+        </p>
+    
+    <div class="container">
+        <div class="jokes">
+            Here Joke will be displayed
+        </div>
+        <div class="selectors">
+            nsfw
+            <input type="radio" value="nsfw">
+            religious
+            <input type="radio" value="religious">
+            political
+            <input type="radio" value="political">
+            racist
+            <input type="radio" value="racist">
+            explicit
+            <input type="radio" value="explicit">
+            sexist
+            <input type="radio" value="sexist">
+        </div>
+        <button class="btn">
+            TELL ME A JOKE
+        </button>
+    </div>
+    <script>
+        let h = document.getElementsByClassName("jokes")[0];
+        function generateJokes(link) {
+            let p = fetch(link);
+            p.then(response => {
+                console.log(response)
+                return response.json();
+            }).then(data => {
+                h.innerHTML = data.joke;
+            })
+        }
+        function SortIt(){
+            let inputs=document.getElementsByTagName("input");
+            let l=new Array();
+            for(let i=0;i<inputs.length;i++)
+            {
+                if(inputs[i].checked)
+                {
+                    l.push(inputs[i].value);
+                }
+            }
+            if(l.length==0)
+            {
+                link="https://v2.jokeapi.dev/joke/Any?blacklistFlags=nsfw,religious,political,racist,sexist,explicit&type=single";
+            }
+            else{
+                link="https://v2.jokeapi.dev/joke/Any?blacklistFlags=";
+                for(let i=0;i<l.length;i++)
+                {
+                    if(i==l.length-1){
+                        link=link+l[i];
+                    }
+                    else{
+                    link=link+l[i]+",";
+                    }
+                }
+                link=link+"&type=single";
+            }
+            console.log(link);
+            generateJokes(link);
+        }
+        let btn=document.getElementsByClassName("btn")[0];
+        btn.addEventListener("click",SortIt);
+    </script>
+</body>
+
+</html>
